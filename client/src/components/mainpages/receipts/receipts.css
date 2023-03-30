@@ -1,0 +1,182 @@
+.container {
+    overflow-x: auto;
+    margin: 0 20px;
+}
+
+.receipts_table {
+    width: 100%;
+    min-width: 800px;
+    /* Set a minimum width for the table */
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.receipts_table thead tr {
+    background-color: #acacac;
+    color: #000000;
+    text-align: left;
+}
+
+.receipts_table td {
+    width: 120px; /* Ajuste el valor según sus necesidades */
+}
+
+.receipts_table th,
+.receipts_table td {
+    padding: 12px 15px;
+    border-right: 1px solid #ddd;
+}
+
+.receipts_table th:last-child,
+.receipts_table td:last-child {
+    border-right: none;
+}
+
+.receipts_table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.receipts_table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.receipts_table tbody tr:last-of-type {
+    border-bottom: 2px solid #000000;
+}
+
+.receipts_table tbody tr:hover {
+    background-color: #ddd;
+}
+
+.receipts_table td input[type="checkbox"],
+.receipts_table td input[type="text"],
+.receipts_table td input[type="number"],
+.receipts_table td input[type="date"] {
+    width: 120px;
+    border: none;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    text-align: center;
+    background-color: transparent;
+    outline: none;
+}
+
+.receipts_table td input[type="checkbox"] {
+    width: 30px;
+    margin: auto;
+}
+
+.receipts_table td select {
+    width: 140px;
+    border: none;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    text-align: center;
+    background-color: transparent;
+    outline: none;
+}
+
+.receipts_table td {
+    position: relative;
+}
+
+
+.btn {
+    padding: 5px 8px;
+    border: none;
+    text-align: center;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 4px 2px;
+    width: 200px;
+    margin-right: 5px;
+}
+
+.btn-edit {
+    background-color: #2e2e2e;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+}
+
+.btn-edit:hover {
+    background-color: #ffb520;
+    color: #000000;
+}
+
+.btn-delete {
+    background-color: #df4343;
+    border: 1px solid #000000;
+    width: 70px;
+    color: #000000;
+}
+
+.btn-delete:hover {
+    background-color: #ff1d1d;
+}
+
+.btn-success {
+    width: auto;
+    background-color: #f5b836;
+    color: #000000;
+}
+
+.btn-success:hover {
+    background-color: #ffb006;
+}
+
+/* New CSS for pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination .btn {
+    width: auto;
+    margin-right: 10px;
+}
+
+.pagination .current-page {
+    margin: 0 15px;
+}
+
+@media (max-width: 800px) {
+    .receipts_table thead tr {
+        display: none;
+    }
+
+    .receipts_table tbody tr {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+    .receipts_table td {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .receipts_table td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+    }
+}
+
+.receipts_table td input[type="text"],
+.receipts_table td input[type="number"],
+.receipts_table td input[type="date"] {
+  width: 100%; /* Change width to 100% */
+  box-sizing: border-box;
+}
