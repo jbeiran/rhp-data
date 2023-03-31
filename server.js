@@ -19,6 +19,7 @@ app.use(cors());
 
 app.use('/user', require('./routes/userRouter'))
 app.use('/api', require('./routes/receiptsRouter'))
+app.use('/api', require('./routes/creditClientRouter'))
 
 pool.query('SELECT NOW()', (err, res) => {
     if (err) console.log(err)

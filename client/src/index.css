@@ -31,3 +31,6 @@ a{
 
 /*----------Create Receipts----------*/
 @import url('./components/mainpages/receipts/createReceipt/createReceipt.css');
+
+/*----------Credit Client----------*/
+@import url('./components/mainpages/credit_client/creditClient.css');

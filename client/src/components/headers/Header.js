@@ -35,13 +35,14 @@ function Header() {
     const adminRouter = () => {
         return (
             <>
-                {isLogged ? loggedRouter() : <li className="nav-item"/>}
 
                 <li className="nav-item">
                     <Link to="/register" className="nav-links" onClick={handleClick}>
                         Register agent
                     </Link>
                 </li>
+                
+                {isLogged ? loggedRouter() : <li className="nav-item"/>}
             </>
         )
     }

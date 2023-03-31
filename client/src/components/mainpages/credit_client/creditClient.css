@@ -1,0 +1,135 @@
+.container {
+    overflow-x: auto;
+    margin: 0 20px;
+}
+
+.credit-client-table{
+    width: 100%;
+    min-width: 800px;
+    /* Set a minimum width for the table */
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.credit-client-table thead tr {
+    background-color: #acacac;
+    color: #000000;
+    text-align: left;
+}
+
+.credit-client-table td {
+    width: 120px; /* Ajuste el valor según sus necesidades */
+}
+
+.credit-client-table th,
+.credit-client-table td {
+    padding: 12px 15px;
+    border-right: 1px solid #ddd;
+}
+
+.credit-client-table th:last-child,
+.credit-client-table td:last-child {
+    border-right: none;
+}
+
+.credit-client-table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.credit-client-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.credit-client-table tbody tr:last-of-type {
+    border-bottom: 2px solid #000000;
+}
+
+.credit-client-table tbody tr:hover {
+    background-color: #ddd;
+}
+
+.credit-client-table td input[type="checkbox"],
+.credit-client-table td input[type="text"],
+.credit-client-table td input[type="number"],
+.credit-client-table td input[type="date"] {
+    width: 120px;
+    border: none;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    text-align: center;
+    background-color: transparent;
+    outline: none;
+}
+
+.credit-client-table td input[type="checkbox"] {
+    width: 30px;
+    margin: auto;
+}
+
+.credit-client-table td select {
+    width: 140px;
+    border: none;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    text-align: center;
+    background-color: transparent;
+    outline: none;
+}
+
+.credit-client-table td {
+    position: relative;
+}
+
+.btn {
+    padding: 5px 8px;
+    border: none;
+    text-align: center;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 4px 2px;
+    width: 200px;
+    margin-right: 5px;
+}
+
+.btn-edit {
+    background-color: #2e2e2e;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+}
+
+.btn-edit:hover {
+    background-color: #ffb520;
+    color: #000000;
+}
+
+.btn-delete {
+    background-color: #df4343;
+    border: 1px solid #000000;
+    width: 70px;
+    color: #000000;
+}
+
+.btn-delete:hover {
+    background-color: #ff1d1d;
+}
+
+.btn-success {
+    width: auto;
+    background-color: #f5b836;
+    color: #000000;
+}
+
+.btn-success:hover {
+    background-color: #ffb006;
+}

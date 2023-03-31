@@ -1,12 +1,12 @@
 export const CreditItems = [
     {
         title: 'Client',
-        path: '/client',
+        path: '/credit_client',
         cName: 'dropdown-link'
     },
     {
         title: 'Agente',
-        path: '/agente',
+        path: '/credit_agent',
         cName: 'dropdown-link'
     },
 ]

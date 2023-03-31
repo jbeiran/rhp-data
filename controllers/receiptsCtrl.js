@@ -1,6 +1,5 @@
 const pool = require('../database/db');
 
-
 const receiptsCtrl = {
     getReceipts: async (req, res) => {
         try {
@@ -12,7 +11,7 @@ const receiptsCtrl = {
     },
     createReceipt: async (req, res) => {
         try {
-            const { 
+            const {
                 verify_bank,
                 date,
                 _hours,
@@ -22,7 +21,7 @@ const receiptsCtrl = {
                 exact,
                 code
             } = req.body;
-            
+
             console.log("req.body:", req.body);
 
             if (
@@ -31,19 +30,28 @@ const receiptsCtrl = {
                 !_hours ||
                 !recharge ||
                 !method ||
-                !exact ||
-                !code
+                !exact
             ) {
                 return res.status(400).json({ msg: "Please enter all fields" });
             }
 
-            const max_id= await pool.query("SELECT MAX(receipt_id) FROM receipts");
+            const max_id = await pool.query("SELECT MAX(receipt_id) FROM receipts");
             const receipt_id = max_id.rows[0].max + 1;
 
             await pool.query(
                 "INSERT INTO receipts (receipt_id, verify_bank, dates, _hours, recharge, notes, method, exact, code) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
                 [receipt_id, verify_bank, date, _hours, recharge, notes, method, exact, code]
             );
+
+            if (code.startsWith("C")) {
+                await pool.query(
+                    "INSERT INTO credit_clients (client_code, data, esatto) VALUES ($1, $2, $3)",
+                    [code, date, exact]
+                );
+            } else if (code.startsWith("A")) {
+                return;
+                //await creditClientsCtrl.createCreditClient(code, date, exact);
+            }
 
             res.json({ msg: "Receipt created successfully" });
         } catch (err) {
@@ -63,7 +71,7 @@ const receiptsCtrl = {
                 code
             } = req.body;
 
-            if (!receipt_id || verify_bank===null || !dates || !_hours || !recharge || !method || !exact || !code) {
+            if (!receipt_id || verify_bank === null || !dates || !_hours || !recharge || !method || !exact || !code) {
                 return res.status(400).json({ msg: "Please enter all fields" });
             }
 

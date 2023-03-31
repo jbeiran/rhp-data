@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import axios from 'axios'
 
 import { PaymentMethod } from '../PaymentMethod'
+import { GlobalState } from '../../../../GlobalState'
 
 const initialState = {
   verify_bank: false,
@@ -15,8 +18,10 @@ const initialState = {
 }
 
 function CreateReceipt({ fetchReceipts }) {
-  //const state = useContext(GlobalState)
+  const state = useContext(GlobalState)
   const [receipt, setReceipt] = useState(initialState);
+  const navigate = useNavigate()
+
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -30,17 +35,57 @@ function CreateReceipt({ fetchReceipts }) {
     }
 
     setReceipt({ ...receipt, [name]: inputValue });
+  }
 
+  const isClientCode = (code) => {
+    if (code.startsWith('C')) return true;
+
+    return false;
+  }
+
+  const isAgentCode = (code) => {
+    if (code.startsWith('A')) return true;
+    
+    return false;
   }
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      console.log(receipt)
+     // console.log(receipt)
+      if (!isClientCode(receipt.code) && !isAgentCode(receipt.code)) {
+        alert("Invalid code. Please enter a valid code.");
+        return;
+      }
+
       await axios.post('/api/receipts', { ...receipt })
       alert('Receipt created')
       setReceipt(initialState)
       fetchReceipts()
+
+      if(!receipt.verify_bank){
+        navigate("/receipts");
+        return;
+      }
+
+      if (!receipt.code) {
+        navigate("/receipts");
+        return;
+      }
+
+      if (isClientCode(receipt.code)) {
+        const creditClientData = {
+          client_code: receipt.code,
+          dates: receipt.date,
+          esatto: receipt.exact,
+          prodotto: '',
+          costo:''
+        };
+
+        await axios.post('/api/credit_client', { ...creditClientData })
+        fetchReceipts()
+        navigate(`/credit_client/${receipt.code}`);
+      }
     } catch (err) {
       alert(err.response.data.msg)
     }

@@ -16,6 +16,18 @@ function Receipts() {
 
   const [modifiedRows, setModifiedRows] = useState([]);
 
+  const isClientCode = (code) => {
+    if (code.startsWith('C')) return true;
+
+    return false;
+  }
+
+  const isAgentCode = (code) => {
+    if (code.startsWith('A')) return true;
+    
+    return false;
+  }
+
   //console.log(receipts)
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -25,11 +37,11 @@ function Receipts() {
     if (editing === receiptId) {
       const receiptToUpdate = editableReceipts.find(receipt => receipt.receipt_id === receiptId);
       const originalReceipt = receipts.find(receipt => receipt.receipt_id === receiptId);
-  
+
       if (JSON.stringify(receiptToUpdate) !== JSON.stringify(originalReceipt)) {
         handleUpdate(receiptToUpdate);
       }
-  
+
       setEditing(null);
     } else {
       const receipt = receipts.find(receipt => receipt.receipt_id === receiptId);
@@ -44,6 +56,7 @@ function Receipts() {
   const handleUpdate = async (receipt) => {
     try {
       await axios.put(`/api/receipts/${receipt._id}`, { ...receipt });
+      
       setModifiedRows((prevState) => [...prevState, receipt.receipt_id]);
       fetchReceipts();
     } catch (err) {
@@ -152,7 +165,7 @@ function Receipts() {
                       type="checkbox"
                       checked={currentReceipt.verify_bank}
                       disabled={!isEditing}
-                      style = {{
+                      style={{
                         width: "20px",
                         height: "20px",
                       }}
@@ -279,7 +292,17 @@ function Receipts() {
                           onChange={(e) => handleChange(e, receipt.receipt_id, 'code')}
                         />
                       ) : (
-                        receipt.code
+                        <Link
+                          to={
+                            isClientCode(receipt.code)
+                            ? `/credit_client/${receipt.code}`
+                            : isAgentCode(receipt.code)
+                            ? `/credit_agent/${receipt.code}`
+                            : `/not_found`
+                          }
+                        >
+                          {receipt.code}
+                        </Link>
                       )
                     }
                   </td>

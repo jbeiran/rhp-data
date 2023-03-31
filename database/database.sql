@@ -26,3 +26,12 @@ create table receipts(
 -- modify date to timestamp
 alter table receipts alter column dates type timestamp with time zone;
 
+--credit_client table
+create table credit_clients(
+    credit_client_id serial primary key,
+    client_code VARCHAR(255) NOT NULL,
+    data date not null,
+    esatto numeric(10,2) not null,
+    prodotto varchar(255),
+    costo numeric(10,2)
+);
