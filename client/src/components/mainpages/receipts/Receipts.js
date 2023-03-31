@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { GlobalState } from '../../../GlobalState'
@@ -55,8 +55,20 @@ function Receipts() {
 
   const handleUpdate = async (receipt) => {
     try {
-      await axios.put(`/api/receipts/${receipt._id}`, { ...receipt });
-      
+      console.log(receipt)
+      await axios.put(`/api/receipts/${receipt.receipt_id}`, { ...receipt });
+      //await axios.put(`/api/credit_client/${receipt.code}`, { ...receipt });
+
+      if (isClientCode(receipt.code)) {
+        console.log('Updating credit_client:', receipt.code, receipt.dates, receipt.recharge)
+        await axios.put(
+          `/api/credit_client/${receipt.code}`, {
+            data: receipt.dates,
+            esatto: receipt.exact,
+          }
+        );
+      } 
+
       setModifiedRows((prevState) => [...prevState, receipt.receipt_id]);
       fetchReceipts();
     } catch (err) {
@@ -81,6 +93,9 @@ function Receipts() {
       let confirm = window.confirm("Are you sure you want to delete this receipt?");
       if (confirm) {
         await axios.delete(`/api/receipts/${id}`);
+
+        
+
         fetchReceipts();
       } else {
         return;
@@ -107,6 +122,10 @@ function Receipts() {
       console.error('Error fetching receipts:', error);
     }
   };
+
+  useEffect(() => {
+    fetchReceipts();
+  }, []);
 
 
   return (

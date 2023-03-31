@@ -7,6 +7,15 @@ function CreditClient() {
   const { code } = useParams();
   const [creditClients, setCreditClients] = useState([]);
 
+  
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${day}-${month}-${year}`;
+  };
+
   useEffect(() => {
     const fetchCreditClients = async () => {
       try {
@@ -39,7 +48,7 @@ function CreditClient() {
           {
             creditClients.map((creditClient) => (
               <tr key={creditClient.credit_client_id}>
-                <td style={{ textAlign: "center" }}>{creditClient.data}</td>
+                <td style={{ textAlign: "center" }}>{formatDate(creditClient.data)}</td>
                 <td style={{ textAlign: "center" }}>{creditClient.esatto}</td>
                 <td style={{ textAlign: "center" }}>{creditClient.prodotto}</td>
                 <td style={{ textAlign: "center" }}>{creditClient.costo}</td>
