@@ -17,14 +17,14 @@ const creditClietnCtrl = {
     },
     createCreditClient: async (req, res) => {
         try {
-            const { client_code, esatto } = req.body;
+            const { client_code, data, esatto } = req.body;
 
             const max_id = await pool.query("SELECT MAX(credit_client_id) FROM credit_clients");
             const credit_client_id = max_id.rows[0].max + 1;
 
             await pool.query(
-                "INSERT INTO credit_clients (credit_client_id, client_code, esatto) VALUES ($1, $2, $3) RETURNING *",
-                [credit_client_id, client_code, esatto]
+                "INSERT INTO credit_clients (credit_client_id, client_code, data, esatto) VALUES ($1, $2, $3, $4) RETURNING *",
+                [credit_client_id, client_code, data, esatto]
             );
 
             res.json({ msg: "Credit client created successfully" });

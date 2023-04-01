@@ -6,7 +6,7 @@ router.route('/credit_client/:client_code')
     .delete(creditClientCtrl.deleteCreditClient)
     .put(creditClientCtrl.updateCreditClient)
 
-router.route('/credit_client/create')
+router.route('/credit_client')
     .post(creditClientCtrl.createCreditClient)
 
 module.exports = router;

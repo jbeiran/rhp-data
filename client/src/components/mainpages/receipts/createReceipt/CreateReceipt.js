@@ -17,7 +17,7 @@ const initialState = {
   code: ''
 }
 
-function CreateReceipt({ fetchReceipts }) {
+function CreateReceipt() {
   const state = useContext(GlobalState)
   const [receipt, setReceipt] = useState(initialState);
   const navigate = useNavigate()
@@ -61,7 +61,6 @@ function CreateReceipt({ fetchReceipts }) {
       await axios.post('/api/receipts', { ...receipt })
       alert('Receipt created')
       setReceipt(initialState)
-      fetchReceipts()
 
       if(!receipt.verify_bank){
         navigate("/receipts");
@@ -76,20 +75,28 @@ function CreateReceipt({ fetchReceipts }) {
       if (isClientCode(receipt.code)) {
         const creditClientData = {
           client_code: receipt.code,
-          dates: receipt.date,
+          data: receipt.date,
           esatto: receipt.exact,
           prodotto: '',
-          costo:''
+          costo: ''
         };
-
-        await axios.post('/api/credit_client', { ...creditClientData })
-        fetchReceipts()
+        
+        await axios.post('/api/credit_client', { ...creditClientData });
         navigate(`/credit_client/${receipt.code}`);
       }
+
     } catch (err) {
-      alert(err.response.data.msg)
+      // Manejar errores específicos
+      if (err.response && err.response.data && err.response.data.msg) {
+        alert(err.response.data.msg);
+      } else {
+        // Manejar errores genéricos
+        alert("An error occurred. Please try again.");
+        console.error(err);
+      }
     }
-  }
+  };
+  
 
   return (
     <div style={{ marginTop: "100px" }} className="create_receipts">
