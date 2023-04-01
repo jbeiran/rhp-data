@@ -59,18 +59,20 @@ function Receipts() {
       await axios.put(`/api/receipts/${receipt.receipt_id}`, { ...receipt });
       //await axios.put(`/api/credit_client/${receipt.code}`, { ...receipt });
 
+      setModifiedRows((prevState) => [...prevState, receipt.receipt_id]);
+      fetchReceipts();
+
       if (isClientCode(receipt.code)) {
         console.log('Updating credit_client:', receipt.code, receipt.dates, receipt.recharge)
         await axios.put(
           `/api/credit_client/${receipt.code}`, {
-            data: receipt.date,
+            data: receipt.dates,
             esatto: receipt.exact,
+            prodotto: "",
+            costo: 0
           }
         );
-      } 
-
-      setModifiedRows((prevState) => [...prevState, receipt.receipt_id]);
-      fetchReceipts();
+      }
     } catch (err) {
       alert('Error: ' + err.response.data.msg)
     }

@@ -7,6 +7,13 @@ function CreditClient() {
   const { code } = useParams();
   const [creditClients, setCreditClients] = useState([]);
 
+  const [editing, setEditing] = useState(null)
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage] = useState(10);
+
+  const [modifiedRows, setModifiedRows] = useState([]);
+
   //const [editing, setEditing] = useState(null)
   
   const formatDate = (dateStr) => {
@@ -16,6 +23,10 @@ function CreditClient() {
     const day = String(date.getDate()).padStart(2, '0');
     return `${day}-${month}-${year}`;
   };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  }
 
   useEffect(() => {
     const fetchCreditClients = async () => {
