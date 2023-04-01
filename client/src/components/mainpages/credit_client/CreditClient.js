@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 function CreditClient() {
   const { code } = useParams();
   const [creditClients, setCreditClients] = useState([]);
 
+  //const [editing, setEditing] = useState(null)
   
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -57,13 +58,13 @@ function CreditClient() {
                       Edit
                     </button>
 
-                    <Link>
+                    {/*<Link>
                       <button
                         className="btn btn-delete"
                       >
                         Elimina
                       </button>
-                    </Link>
+                    </Link>*/}
                   </td>
               </tr>
           ))}

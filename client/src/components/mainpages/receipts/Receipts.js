@@ -63,7 +63,7 @@ function Receipts() {
         console.log('Updating credit_client:', receipt.code, receipt.dates, receipt.recharge)
         await axios.put(
           `/api/credit_client/${receipt.code}`, {
-            data: receipt.dates,
+            data: receipt.date,
             esatto: receipt.exact,
           }
         );
@@ -331,14 +331,14 @@ function Receipts() {
                       {isEditing ? 'Conferma' : 'Modifica'}
                     </button>
 
-                    <Link>
+                    {/*<Link>
                       <button
                         className="btn btn-delete"
                         onClick={() => deleteReceipt(receipt.receipt_id)}
                       >
                         Elimina
                       </button>
-                    </Link>
+                  </Link>*/}
                   </td>
                 </tr>
               );

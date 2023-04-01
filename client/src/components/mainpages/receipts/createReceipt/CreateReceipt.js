@@ -83,6 +83,7 @@ function CreateReceipt() {
         
         await axios.post('/api/credit_client', { ...creditClientData });
         navigate(`/credit_client/${receipt.code}`);
+        return;
       }
 
     } catch (err) {
