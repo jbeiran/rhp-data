@@ -38,10 +38,12 @@ const receiptsCtrl = {
             const max_id = await pool.query("SELECT MAX(receipt_id) FROM receipts");
             const receipt_id = max_id.rows[0].max + 1;
 
-            await pool.query(
+            const newReceipt = await pool.query(
                 "INSERT INTO receipts (receipt_id, verify_bank, dates, _hours, recharge, notes, method, exact, code) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
                 [receipt_id, verify_bank, date, _hours, recharge, notes, method, exact, code]
             );
+
+            res.json({ _id: newReceipt.rows[0].receipt_id });
 
             /*if (code.startsWith("C")) {
                 await pool.query(
@@ -50,7 +52,7 @@ const receiptsCtrl = {
                 );
             } */
 
-            res.json({ msg: "Receipt created successfully" });
+            //res.json({ msg: "Receipt created successfully" });
         } catch (err) {
             console.error(err.message);
         }

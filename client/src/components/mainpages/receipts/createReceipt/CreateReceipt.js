@@ -58,9 +58,11 @@ function CreateReceipt() {
         return;
       }
 
-      await axios.post('/api/receipts', { ...receipt })
+      const res = await axios.post('/api/receipts', { ...receipt })
       alert('Receipt created')
       setReceipt(initialState)
+
+      console.log(res.data)
 
       if (!receipt.code) {
         navigate("/receipts");
@@ -73,7 +75,8 @@ function CreateReceipt() {
           dates: receipt.date,
           exact: receipt.exact,
           prodotto: '',
-          costo: 0
+          costo: 0,
+          receipt_id: res.data._id,
         };
         
         await axios.post('/api/credit_client', { ...creditClientData });
