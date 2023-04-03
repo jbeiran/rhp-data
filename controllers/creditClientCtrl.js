@@ -46,8 +46,7 @@ const creditClietnCtrl = {
     },
     updateCreditClient: async (req, res) => {
         try {
-          const { client_code } = req.params;
-          const { dates, exact, receipt_id } = req.body; // Agregar receipt_id aquí
+          const { client_code, prodotto, costo , receipt_id } = req.body; // Agregar receipt_id aquí
           console.log("client_code:", client_code, dates, exact, receipt_id); // Mostrar receipt_id en la consola
       
           if (!client_code || !dates || !exact || !receipt_id) { // Agregar receipt_id en la validación
