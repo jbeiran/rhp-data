@@ -43,15 +43,12 @@ const receiptsCtrl = {
                 [receipt_id, verify_bank, date, _hours, recharge, notes, method, exact, code]
             );
 
-            if (code.startsWith("C")) {
+            /*if (code.startsWith("C")) {
                 await pool.query(
-                    "INSERT INTO credit_clients (client_code, data, esatto) VALUES ($1, $2, $3)",
+                    "INSERT INTO credit_clients (client_code, dates, exact) VALUES ($1, $2, $3)",
                     [code, date, exact]
                 );
-            } else if (code.startsWith("A")) {
-                return;
-                //await creditClientsCtrl.createCreditClient(code, date, exact);
-            }
+            } */
 
             res.json({ msg: "Receipt created successfully" });
         } catch (err) {
@@ -81,7 +78,7 @@ const receiptsCtrl = {
                 return res.status(400).json({ msg: "Receipt does not exist" });
             }
 
-            const updateReceipt = await pool.query(
+            await pool.query(
                 "UPDATE receipts SET verify_bank = $1, dates = $2, _hours = $3, recharge = $4, notes = $5, method = $6, exact = $7, code = $8 WHERE receipt_id = $9",
                 [verify_bank, dates, _hours, recharge, notes, method, exact, code, receipt_id]
             );

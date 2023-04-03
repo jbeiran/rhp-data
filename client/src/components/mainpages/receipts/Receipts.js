@@ -63,15 +63,13 @@ function Receipts() {
       fetchReceipts();
 
       if (isClientCode(receipt.code)) {
-        console.log('Updating credit_client:', receipt.code, receipt.dates, receipt.recharge)
-        await axios.put(
-          `/api/credit_client/${receipt.code}`, {
-            data: receipt.dates,
-            esatto: receipt.exact,
-            prodotto: "",
-            costo: 0
-          }
-        );
+        console.log("Updating credit_client:", receipt.code, receipt.dates, receipt.recharge);
+        await axios.put(`/api/credit_client/${receipt.code}`, {
+          client_code: receipt.code,
+          receipt_id: receipt.receipt_id,
+          dates: formatDate(receipt.dates),
+          exact: receipt.exact,
+        });
       }
     } catch (err) {
       alert('Error: ' + err.response.data.msg)
@@ -89,7 +87,7 @@ function Receipts() {
     });
   };
 
-  const deleteReceipt = async (id) => {
+  /*const deleteReceipt = async (id) => {
     try {
       //window of confirm to delete
       let confirm = window.confirm("Are you sure you want to delete this receipt?");
@@ -106,7 +104,7 @@ function Receipts() {
     } catch (err) {
       alert('Error: ' + err.response.data.msg)
     }
-  };
+  };*/
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);

@@ -17,14 +17,14 @@ const creditClietnCtrl = {
     },
     createCreditClient: async (req, res) => {
         try {
-            const { client_code, data, esatto, prodotto, costo } = req.body;
+            const { client_code, dates, exact, prodotto, costo } = req.body;
 
             const max_id = await pool.query("SELECT MAX(credit_client_id) FROM credit_clients");
             const credit_client_id = max_id.rows[0].max + 1;
 
             await pool.query(
-                "INSERT INTO credit_clients (credit_client_id, client_code, data, esatto, prodotto, costo) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-                [credit_client_id, client_code, data, esatto, prodotto, costo]
+                "INSERT INTO credit_clients (credit_client_id, client_code, dates, exact, prodotto, costo) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+                [credit_client_id, client_code, dates, exact, prodotto, costo]
             );
 
             res.json({ msg: "Credit client created successfully" });
@@ -46,31 +46,31 @@ const creditClietnCtrl = {
     },
     updateCreditClient: async (req, res) => {
         try {
-            const { client_code } = req.params;
-            const { data, esatto } = req.body;
-            console.log("client_code:", client_code, data, esatto);
-    
-            if (!client_code || !data || !esatto) {
-                return res.status(400).json({ msg: "Please enter all fields" });
-            }
-    
-            const creditClient = await pool.query(
-                "SELECT * FROM credit_clients WHERE client_code = $1",
-                [client_code]
-            );
-    
-            if (creditClient.rows.length === 0) {
-                return res.status(400).json({ msg: "Credit client does not exist" });
-            }
-    
-            await pool.query(
-                "UPDATE credit_clients SET data = $1, esatto = $2 WHERE credit_client_id = (SELECT MAX(credit_client_id) FROM credit_clients WHERE client_code = $3)",
-                [data, esatto, client_code]
-            );
-    
-            res.json({ msg: "Credit client updated successfully" });
+          const { client_code } = req.params;
+          const { dates, exact, receipt_id } = req.body;
+          console.log("client_code:", client_code, "dates:", dates, "exact:", exact, "receipt_id:", receipt_id);
+      
+          if (!client_code || !dates || !exact || !receipt_id) {
+            return res.status(400).json({ msg: "Please enter all fields" });
+          }
+      
+          const creditClient = await pool.query(
+            "SELECT * FROM credit_clients WHERE client_code = $1 AND receipt_id = $2",
+            [client_code, receipt_id]
+          );
+      
+          if (creditClient.rows.length === 0) {
+            return res.status(400).json({ msg: "Credit client does not exist" });
+          }
+      
+          await pool.query(
+            "UPDATE credit_clients SET dates = $1, exact = $2 WHERE credit_client_id = $3",
+            [dates, exact, creditClient.rows[0].credit_client_id]
+          );
+      
+          res.json({ msg: "Credit client updated successfully" });
         } catch (err) {
-            console.error(err.message);
+          console.error(err.message);
         }
     },
 }

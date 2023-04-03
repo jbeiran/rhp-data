@@ -62,11 +62,6 @@ function CreateReceipt() {
       alert('Receipt created')
       setReceipt(initialState)
 
-      if(!receipt.verify_bank){
-        navigate("/receipts");
-        return;
-      }
-
       if (!receipt.code) {
         navigate("/receipts");
         return;
@@ -75,14 +70,22 @@ function CreateReceipt() {
       if (isClientCode(receipt.code)) {
         const creditClientData = {
           client_code: receipt.code,
-          data: receipt.date,
-          esatto: receipt.exact,
+          dates: receipt.date,
+          exact: receipt.exact,
           prodotto: '',
-          costo: ''
+          costo: 0
         };
         
         await axios.post('/api/credit_client', { ...creditClientData });
         navigate(`/credit_client/${receipt.code}`);
+        return;
+      }
+
+      if(receipt.verify_bank){
+        navigate(`/receipts/${receipt.code}`);
+        return;
+      } else {
+        navigate("/receipts");
         return;
       }
 

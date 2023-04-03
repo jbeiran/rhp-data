@@ -60,8 +60,8 @@ function CreditClient() {
           {
             creditClients.map((creditClient) => (
               <tr key={creditClient.credit_client_id}>
-                <td style={{ textAlign: "center" }}>{formatDate(creditClient.data)}</td>
-                <td style={{ textAlign: "center" }}>{creditClient.esatto}</td>
+                <td style={{ textAlign: "center" }}>{formatDate(creditClient.dates)}</td>
+                <td style={{ textAlign: "center" }}>{creditClient.exact}</td>
                 <td style={{ textAlign: "center" }}>{creditClient.prodotto}</td>
                 <td style={{ textAlign: "center" }}>{creditClient.costo}</td>
                 <td>
