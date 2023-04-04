@@ -15,7 +15,7 @@ function CreditClient() {
   const [modifiedRows, setModifiedRows] = useState([]);
 
   //const [editing, setEditing] = useState(null)
-  
+
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     const year = date.getFullYear();
@@ -27,6 +27,31 @@ function CreditClient() {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   }
+
+  const toggleEditMode = (id) => {
+    if (editing === id) {
+      setEditing(null);
+    } else {
+      setEditing(id);
+    }
+  };
+
+  const handleInputChange = (event, index) => {
+    const { name, value } = event.target;
+    const updatedCreditClients = [...creditClients];
+    updatedCreditClients[index][name] = value;
+    setCreditClients(updatedCreditClients);
+  };
+
+  const updateCreditClient = async (credit_client_id) => {
+    const updatedCreditClient = creditClients.find((creditClient) => creditClient.credit_client_id === credit_client_id);
+    try {
+      await axios.put(`/api/credit_client/${credit_client_id}`, updatedCreditClient);
+      setEditing(null);
+    } catch (error) {
+      console.error('Error updating credit client:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchCreditClients = async () => {
@@ -41,6 +66,11 @@ function CreditClient() {
     fetchCreditClients();
   }, [code]);
 
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = creditClients.slice(indexOfFirstRow, indexOfLastRow);
+
+  const totalPages = Math.ceil(creditClients.length / rowsPerPage);
 
   return (
     <div style={{ marginTop: "50px" }} className="clients">
@@ -58,29 +88,77 @@ function CreditClient() {
         </thead>
         <tbody>
           {
-            creditClients.map((creditClient) => (
+            currentRows.map((creditClient, index) => (
               <tr key={creditClient.credit_client_id}>
                 <td style={{ textAlign: "center" }}>{formatDate(creditClient.dates)}</td>
                 <td style={{ textAlign: "center" }}>{creditClient.exact}</td>
-                <td style={{ textAlign: "center" }}>{creditClient.prodotto}</td>
-                <td style={{ textAlign: "center" }}>{creditClient.costo}</td>
+                <td style={{ textAlign: "center" }}>
+                  {editing === creditClient.credit_client_id ? (
+                    <input
+                      type="text"
+                      name="prodotto"
+                      value={creditClient.prodotto}
+                      onChange={(event) => handleInputChange(event, index)}
+                    />
+                  ) : (
+                    creditClient.prodotto
+                  )}
+                </td>
+                <td style={{ textAlign: "center" }}>
+                  {editing === creditClient.credit_client_id ? (
+                    <input
+                      type="text"
+                      name="costo"
+                      value={creditClient.costo}
+                      onChange={(event) => handleInputChange(event, index)}
+                    />
+                  ) : (
+                    creditClient.costo
+                  )}
+                </td>
                 <td>
-                    <button className="btn btn-edit">
-                      Edit
-                    </button>
+                  <button className="btn btn-edit"
+                    onClick={() => {
+                      if (editing === creditClient.credit_client_id) {
+                        updateCreditClient(creditClient.credit_client_id)
+                      }
+                      toggleEditMode(creditClient.credit_client_id)
+                    }}
+                  >
+                    {editing === creditClient.credit_client_id ? 'Save' : 'Edit'} 
+                  </button>
 
-                    {/*<Link>
+                  {/*<Link>
                       <button
                         className="btn btn-delete"
                       >
                         Elimina
                       </button>
                     </Link>*/}
-                  </td>
+                </td>
               </tr>
-          ))}
+            ))}
         </tbody>
       </table>
+
+      <div className="pagination">
+        <button
+          className="btn btn-primary"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span className="current-page">{currentPage}</span>
+        <button
+          className="btn btn-primary"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
+
     </div>
   );
 }

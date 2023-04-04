@@ -49,13 +49,13 @@ const creditClietnCtrl = {
           const { client_code, prodotto, costo, receipt_id } = req.body; // Agregar receipt_id aquí
           console.log("client_code:", client_code,  prodotto, costo, receipt_id); // Mostrar receipt_id en la consola
       
-          if (!client_code || !prodotto || !costo || !receipt_id) { // Agregar receipt_id en la validación
+          /*if (!client_code || !prodotto || !costo || !receipt_id) { // Agregar receipt_id en la validación
             return res.status(400).json({ msg: "Please enter all fields" });
-          }
+          }*/
       
           const creditClient = await pool.query(
-            "SELECT * FROM credit_clients WHERE client_code = $1",
-            [client_code]
+            "SELECT * FROM credit_clients WHERE receipt_id = $1",
+            [receipt_id]
           );
       
           if (creditClient.rows.length === 0) {
@@ -63,8 +63,8 @@ const creditClietnCtrl = {
           }
       
           await pool.query(
-            "UPDATE credit_clients SET prodotto = $1, costo = $2, receipt_id = $3 WHERE client_code = $4",
-            [prodotto, costo, receipt_id, client_code] // Agregar receipt_id
+            "UPDATE credit_clients SET prodotto = $1, costo = $2 WHERE receipt_id = $3",
+            [prodotto, costo, receipt_id] // Agregar receipt_id
             );
       
           res.json({ msg: "Credit client updated successfully" });
