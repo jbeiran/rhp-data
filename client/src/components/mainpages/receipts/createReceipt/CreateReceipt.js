@@ -8,7 +8,7 @@ import { GlobalState } from '../../../../GlobalState'
 
 const initialState = {
   verify_bank: false,
-  date: '',
+  dates: '',
   _hours: '',
   recharge: '',
   notes: '',
@@ -72,7 +72,7 @@ function CreateReceipt() {
       if (isClientCode(receipt.code)) {
         const creditClientData = {
           client_code: receipt.code,
-          dates: receipt.date,
+          dates: receipt.dates,
           exact: receipt.exact,
           prodotto: '',
           costo: 0,
@@ -121,8 +121,8 @@ function CreateReceipt() {
             <option value="false">No</option>
           </select>
 
-          <label htmlFor="date">Date</label>
-          <input type="date" className="form-control" id="date" name="date" value={receipt.date} onChange={handleInputChange} />
+          <label htmlFor="dates">Date</label>
+          <input type="date" className="form-control" id="dates" name="dates" value={receipt.date} onChange={handleInputChange} />
 
           <label htmlFor="_hours">Hours</label>
           <input type="text" className="form-control" id="_hours" name="_hours" value={receipt._hours} onChange={handleInputChange} />

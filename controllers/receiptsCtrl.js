@@ -13,7 +13,7 @@ const receiptsCtrl = {
         try {
             const {
                 verify_bank,
-                date,
+                dates,
                 _hours,
                 recharge,
                 notes,
@@ -26,7 +26,7 @@ const receiptsCtrl = {
 
             if (
                 verify_bank === null ||
-                !date ||
+                !dates ||
                 !_hours ||
                 !recharge ||
                 !method ||
@@ -40,9 +40,9 @@ const receiptsCtrl = {
 
             const newReceipt = await pool.query(
                 "INSERT INTO receipts (receipt_id, verify_bank, dates, _hours, recharge, notes, method, exact, code) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
-                [receipt_id, verify_bank, date, _hours, recharge, notes, method, exact, code]
+                [receipt_id, verify_bank, dates, _hours, recharge, notes, method, exact, code]
             );
-
+                
 
             /*if (code.startsWith("C")) {
                 await pool.query(
@@ -84,6 +84,13 @@ const receiptsCtrl = {
                 "UPDATE receipts SET verify_bank = $1, dates = $2, _hours = $3, recharge = $4, notes = $5, method = $6, exact = $7, code = $8 WHERE receipt_id = $9",
                 [verify_bank, dates, _hours, recharge, notes, method, exact, code, receipt_id]
             );
+
+            if(code.startsWith("C")) {
+                await pool.query(
+                    "UPDATE credit_clients SET dates = $1, exact = $2 WHERE receipt_id = $3",
+                    [dates, exact, receipt_id]
+                );
+            }
 
             res.json({ msg: "Receipt updated successfully" });
         } catch (err) {

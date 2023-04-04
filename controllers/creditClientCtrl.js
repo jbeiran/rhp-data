@@ -17,14 +17,14 @@ const creditClietnCtrl = {
     },
     createCreditClient: async (req, res) => {
         try {
-            const { client_code, dates, exact, prodotto, costo, receipt_id } = req.body; // Agregar receipt_id
+            const { client_code, dates, exact, receipt_id } = req.body; // Agregar receipt_id
     
             const max_id = await pool.query("SELECT MAX(credit_client_id) FROM credit_clients");
             const credit_client_id = max_id.rows[0].max + 1;
     
             await pool.query(
-                "INSERT INTO credit_clients (credit_client_id, client_code, dates, exact, prodotto, costo, receipt_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *", // Agregar receipt_id
-                [credit_client_id, client_code, dates, exact, prodotto, costo, receipt_id] // Agregar receipt_id
+                "INSERT INTO credit_clients (credit_client_id, client_code, dates, exact, receipt_id) VALUES ($1, $2, $3, $4, $5) RETURNING *", // Agregar receipt_id
+                [credit_client_id, client_code, dates, exact, receipt_id] // Agregar receipt_id
             );
     
             res.json({ msg: "Credit client created successfully" });
@@ -46,10 +46,10 @@ const creditClietnCtrl = {
     },
     updateCreditClient: async (req, res) => {
         try {
-          const { client_code, prodotto, costo , receipt_id } = req.body; // Agregar receipt_id aquí
-          console.log("client_code:", client_code, dates, exact, receipt_id); // Mostrar receipt_id en la consola
+          const { client_code, prodotto, costo, receipt_id } = req.body; // Agregar receipt_id aquí
+          console.log("client_code:", client_code,  prodotto, costo, receipt_id); // Mostrar receipt_id en la consola
       
-          if (!client_code || !dates || !exact || !receipt_id) { // Agregar receipt_id en la validación
+          if (!client_code || !prodotto || !costo || !receipt_id) { // Agregar receipt_id en la validación
             return res.status(400).json({ msg: "Please enter all fields" });
           }
       
@@ -63,9 +63,9 @@ const creditClietnCtrl = {
           }
       
           await pool.query(
-            "UPDATE credit_clients SET data = $1, esatto = $2, receipt_id = $3 WHERE credit_client_id = (SELECT MAX(credit_client_id) FROM credit_clients WHERE client_code = $4)",
-            [dates, exact, receipt_id, client_code] // Agregar receipt_id aquí
-          );
+            "UPDATE credit_clients SET prodotto = $1, costo = $2, receipt_id = $3 WHERE client_code = $4",
+            [prodotto, costo, receipt_id, client_code] // Agregar receipt_id
+            );
       
           res.json({ msg: "Credit client updated successfully" });
         } catch (err) {

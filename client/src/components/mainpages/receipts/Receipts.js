@@ -60,18 +60,6 @@ function Receipts() {
   
       setModifiedRows((prevState) => [...prevState, receipt.receipt_id]);
       fetchReceipts();
-  
-      if (isClientCode(receipt.code)) {
-        console.log('Updating credit_client:', receipt.code, receipt.dates, receipt.recharge)
-        await axios.put(
-          `/api/credit_client/${receipt.code}`, {
-            client_code: receipt.code,
-            dates: formatDate(receipt.dates),
-            exact: receipt.exact,
-            receipt_id: receipt.receipt_id // Agregar receipt_id aquí
-          }
-        );
-      }
     } catch (err) {
       alert('Error: ' + err.response.data.msg)
     }

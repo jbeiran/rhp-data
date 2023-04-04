@@ -23,6 +23,9 @@ create table receipts(
     code varchar(255) not null
 );
 
+--modify code is null
+alter table receipts alter column code drop not null;
+
 -- modify date to timestamp
 alter table receipts alter column dates type timestamp with time zone;
 
