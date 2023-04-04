@@ -133,3 +133,49 @@
 .btn-success:hover {
     background-color: #ffb006;
 }
+
+/* New CSS for pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination .btn {
+    width: auto;
+    margin-right: 10px;
+}
+
+.pagination .current-page {
+    margin: 0 15px;
+}
+
+@media (max-width: 800px) {
+    .credit-client-table thead tr {
+        display: none;
+    }
+
+    .credit-client-table tbody tr {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+    .credit-client-table td {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .credit-client-table td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+    }
+}
+
+.credit-client-table td input[type="text"],
+.credit-client-table td input[type="number"],
+.credit-client-table td input[type="date"] {
+  width: 100%; /* Change width to 100% */
+  box-sizing: border-box;
+}

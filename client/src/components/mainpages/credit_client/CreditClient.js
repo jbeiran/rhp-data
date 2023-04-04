@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 // import { Link } from 'react-router-dom';
@@ -14,8 +14,6 @@ function CreditClient() {
 
   const [modifiedRows, setModifiedRows] = useState([]);
 
-  //const [editing, setEditing] = useState(null)
-
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     const year = date.getFullYear();
@@ -23,6 +21,14 @@ function CreditClient() {
     const day = String(date.getDate()).padStart(2, '0');
     return `${day}-${month}-${year}`;
   };
+
+  const totalEuro = useMemo(() => {
+    return creditClients.reduce((total, client) => total + parseFloat(client.exact || 0), 0);
+  }, [creditClients]);
+
+  const totalCosto = useMemo(() => {
+    return creditClients.reduce((total, client) => total + parseFloat(client.costo || 0), 0);
+  }, [creditClients]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -139,7 +145,17 @@ function CreditClient() {
               </tr>
             ))}
         </tbody>
+
+        <tfoot style={{ textAlign: "center"}}>
+          <tr>
+            <td style={{ textAlign: "center" }}>Total</td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center" }}>€ {totalEuro - totalCosto}</td>
+          </tr>
+        </tfoot>
       </table>
+                    
 
       <div className="pagination">
         <button
