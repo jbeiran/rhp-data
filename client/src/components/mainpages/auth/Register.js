@@ -33,8 +33,9 @@ function Register() {
         <input type="password" name="password" required autoComplete="on"
           placeholder="Password" value={user.password} onChange={handleInput} />
 
+        
         <div className="row">
-          <button type="submit">Login</button>
+          <button type="submit">Register</button>
         </div>
       </form>
     </div>

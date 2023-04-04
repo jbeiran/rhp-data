@@ -34,3 +34,6 @@ a{
 
 /*----------Credit Client----------*/
 @import url('./components/mainpages/credit_client/creditClient.css');
+
+/*----------Credit Agent----------*/
+@import url('./components/mainpages/credit_agent/creditAgent.css');

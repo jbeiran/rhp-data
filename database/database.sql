@@ -39,3 +39,14 @@ CREATE TABLE IF NOT EXISTS credit_clients(
     prodotto varchar(255),
     costo numeric(10,2)
 );
+
+--credit_agent table
+CREATE TABLE IF NOT EXISTS credit_agents(
+    credit_agent_id serial primary key,
+    agent_code VARCHAR(255) NOT NULL,
+    receipt_id int references receipts(receipt_id),
+    dates date not null,
+    exact numeric(10,2) not null,
+    prodotto varchar(255),
+    costo numeric(10,2)
+);

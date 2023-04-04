@@ -80,9 +80,21 @@ function CreditClient() {
 
   return (
     <div style={{ marginTop: "50px" }} className="clients">
-      <h1>Crédito Cliente: {code}</h1>
+      <h1
+        style={{
+          textAlign: "center",
+          fontSize: "30px",
+          fontFamily: "sans-serif",
+          fontWeight: "bold",
+          color: "black",
+          padding: "10px",
+          width: "100%",
+          margin: "auto",
+          marginBottom: "20px"
 
-      <table className="credit-client-table">
+        }}>Crédito Cliente: {code}</h1>
+
+      <table className="credit-client-table" >
         <thead>
           <tr>
             <th style={{ textAlign: "center" }}>Data</th>
@@ -131,7 +143,7 @@ function CreditClient() {
                       toggleEditMode(creditClient.credit_client_id)
                     }}
                   >
-                    {editing === creditClient.credit_client_id ? 'Save' : 'Edit'} 
+                    {editing === creditClient.credit_client_id ? 'Save' : 'Edit'}
                   </button>
 
                   {/*<Link>
@@ -148,14 +160,13 @@ function CreditClient() {
 
         <tfoot style={{ textAlign: "center"}}>
           <tr>
-            <td style={{ textAlign: "center" }}>Total</td>
-          </tr>
-          <tr>
+            <td colSpan="3" style={{ textAlign: "right" }}>Total</td>
             <td style={{ textAlign: "center" }}>€ {totalEuro - totalCosto}</td>
+            <td></td>
           </tr>
         </tfoot>
       </table>
-                    
+
 
       <div className="pagination">
         <button
@@ -163,7 +174,7 @@ function CreditClient() {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          Previous
+          Prev
         </button>
         <span className="current-page">{currentPage}</span>
         <button

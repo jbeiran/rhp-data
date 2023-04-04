@@ -28,7 +28,6 @@ function Receipts() {
     return false;
   }
 
-  //console.log(receipts)
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   }

@@ -23,7 +23,7 @@
 }
 
 .credit-client-table td {
-    width: 120px; /* Ajuste el valor según sus necesidades */
+    width: auto; /* Ajuste el valor según sus necesidades */
 }
 
 .credit-client-table th,
@@ -35,6 +35,7 @@
 .credit-client-table th:last-child,
 .credit-client-table td:last-child {
     border-right: none;
+    width: 200px;
 }
 
 .credit-client-table tbody tr {
@@ -171,11 +172,10 @@
         font-weight: bold;
         display: block;
     }
-}
-
-.credit-client-table td input[type="text"],
-.credit-client-table td input[type="number"],
-.credit-client-table td input[type="date"] {
-  width: 100%; /* Change width to 100% */
-  box-sizing: border-box;
+    .credit-client-table td input[type="text"],
+    .credit-client-table td input[type="number"],
+    .credit-client-table td input[type="date"] {
+      width: 100%; /* Change width to 100% */
+      box-sizing: border-box;
+    }
 }
