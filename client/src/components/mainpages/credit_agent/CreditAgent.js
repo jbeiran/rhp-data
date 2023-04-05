@@ -100,7 +100,50 @@ function CreditAgent() {
           </tr>
         </thead>
         <tbody>
-        
+          {currentRows.map((creditAgent, index) => (
+            <tr key={creditAgent.credit_agent_id}>
+              <td style={{ textAlign: "center" }}>
+                <input type="checkbox" />
+              </td>
+              <td style={{ textAlign: "center" }}>
+
+              </td>
+              <td style={{ textAlign: "center" }}>
+                {formatDate(creditAgent.dates)}
+              </td>
+              <td style={{ textAlign: "center" }}>
+                {creditAgent.exact}
+              </td>
+              <td style={{ textAlign: "center" }}>
+                {creditAgent.prodotto}
+              </td>
+              <td style={{ textAlign: "center" }}>
+                {creditAgent.costo}
+              </td>
+
+
+              <td>
+                <button className="btn btn-edit"
+                  onClick={() => {
+                    if (editing === creditAgent.credit_agent_id) {
+                      updateCreditAgent(creditAgent.credit_agent_id)
+                    }
+                    toggleEditMode(creditAgent.credit_agent_id)
+                  }}
+                >
+                  {editing === creditAgent.credit_agent_id ? 'Save' : 'Edit'}
+                </button>
+
+                {/*<Link>
+                      <button
+                        className="btn btn-delete"
+                      >
+                        Elimina
+                      </button>
+                    </Link>*/}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

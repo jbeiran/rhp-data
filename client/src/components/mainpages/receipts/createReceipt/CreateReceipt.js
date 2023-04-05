@@ -82,6 +82,20 @@ function CreateReceipt() {
         await axios.post('/api/credit_client', { ...creditClientData });
         navigate(`/credit_client/${receipt.code}`);
         return;
+        
+      } else if (isAgentCode(receipt.code)) {
+        const creditAgentData = {
+          agent_code: receipt.code,
+          dates: receipt.dates,
+          exact: receipt.exact,
+          prodotto: '',
+          costo: 0,
+          receipt_id: res.data._id,
+        };
+
+        await axios.post('/api/credit_agent', { ...creditAgentData });
+        navigate(`/credit_agent/${receipt.code}`);
+        return;
       }
 
       if(receipt.verify_bank){

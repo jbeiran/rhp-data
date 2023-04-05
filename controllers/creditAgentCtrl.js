@@ -71,7 +71,7 @@ const creditClietnCtrl = {
         } catch (err) {
           console.error(err.message);
         }
-      },
+    },
 }
 
 module.exports = creditClietnCtrl;
