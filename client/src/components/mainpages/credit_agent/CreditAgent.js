@@ -115,10 +115,28 @@ function CreditAgent() {
                 {creditAgent.exact}
               </td>
               <td style={{ textAlign: "center" }}>
-                {creditAgent.prodotto}
+                {editing === creditAgent.credit_agent_id ? (
+                  <input
+                    type="text"
+                    name="prodotto"
+                    value={creditAgent.prodotto}
+                    onChange={(event) => handleInputChange(event, index)}
+                  />
+                ) : (
+                  creditAgent.prodotto
+                )}
               </td>
               <td style={{ textAlign: "center" }}>
-                {creditAgent.costo}
+                {editing === creditAgent.credit_agent_id ? (
+                  <input
+                    type="text"
+                    name="costo"
+                    value={creditAgent.costo}
+                    onChange={(event) => handleInputChange(event, index)}
+                  />
+                ) : (
+                  creditAgent.costo
+                )}
               </td>
 
 
@@ -146,7 +164,25 @@ function CreditAgent() {
           ))}
         </tbody>
       </table>
-    </div>
+
+      <div className="pagination">
+        <button
+          className="btn btn-primary"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Prev
+        </button>
+        <span className="current-page">{currentPage}</span>
+        <button
+          className="btn btn-primary"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
+    </div >
   );
 }
 
