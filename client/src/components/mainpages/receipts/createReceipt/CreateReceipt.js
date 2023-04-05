@@ -91,6 +91,7 @@ function CreateReceipt() {
           prodotto: '',
           costo: 0,
           receipt_id: res.data._id,
+          ok: false
         };
 
         await axios.post('/api/credit_agent', { ...creditAgentData });

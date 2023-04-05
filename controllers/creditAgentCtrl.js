@@ -17,14 +17,14 @@ const creditClietnCtrl = {
     },
     createCreditAgent: async (req, res) => {
         try {
-            const { agent_code, dates, exact, receipt_id } = req.body; // Agregar receipt_id
+            const { agent_code, dates, exact, receipt_id, ok } = req.body; // Agregar receipt_id
     
             const max_id = await pool.query("SELECT MAX(credit_agent_id) FROM credit_agents");
             const credit_agent_id = max_id.rows[0].max + 1;
     
             await pool.query(
-                "INSERT INTO credit_agents (credit_agent_id, agent_code, dates, exact, receipt_id) VALUES ($1, $2, $3, $4, $5) RETURNING *", // Agregar receipt_id
-                [credit_agent_id, agent_code, dates, exact, receipt_id] // Agregar receipt_id
+                "INSERT INTO credit_agents (credit_agent_id, agent_code, dates, exact, receipt_id, ok) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *", // Agregar receipt_id
+                [credit_agent_id, agent_code, dates, exact, receipt_id, ok] // Agregar receipt_id
             );
     
             res.json({ msg: "Credit agent created successfully" });
@@ -46,7 +46,7 @@ const creditClietnCtrl = {
     },
     updateCreditAgent: async (req, res) => {
         try {
-          const { agent_code, prodotto, costo, receipt_id } = req.body; // Agregar receipt_id aquí
+          const { agent_code, prodotto, costo, receipt_id, ok } = req.body; // Agregar receipt_id aquí
           console.log("agent_code:", agent_code,  prodotto, costo, receipt_id); // Mostrar receipt_id en la consola
       
           /*if (!agent_code || !prodotto || !costo || !receipt_id) { // Agregar receipt_id en la validación
@@ -63,8 +63,8 @@ const creditClietnCtrl = {
           }
       
           await pool.query(
-            "UPDATE credit_agents SET prodotto = $1, costo = $2 WHERE receipt_id = $3",
-            [prodotto, costo, receipt_id] // Agregar receipt_id
+            "UPDATE credit_agents SET prodotto = $1, costo = $2, ok = $3 WHERE receipt_id = $4",
+            [prodotto, costo, ok, receipt_id] // Agregar receipt_id
             );
       
           res.json({ msg: "Credit agent updated successfully" });

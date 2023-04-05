@@ -7,6 +7,9 @@ function CreditAgent() {
   const { code } = useParams();
   const [creditAgents, setCreditAgents] = useState([]);
 
+  const [tempChecked, setTempChecked] = useState(null);
+
+
   const [editing, setEditing] = useState(null)
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,11 +46,25 @@ function CreditAgent() {
 
   const updateCreditAgent = async (credit_agent_id) => {
     const updatedCreditAgent = creditAgents.find((creditAgent) => creditAgent.credit_agent_id === credit_agent_id);
+    
+    if (tempChecked !== null) {
+      updatedCreditAgent.ok = tempChecked;
+      setTempChecked(null);
+    }
+  
     try {
       await axios.put(`/api/credit_agent/${credit_agent_id}`, updatedCreditAgent);
       setEditing(null);
     } catch (error) {
       console.error('Error updating credit agent:', error);
+    }
+  };
+
+  const handleCheckboxChange = (event, index) => {
+    if (editing === creditAgents[index].credit_agent_id) {
+      const updatedCreditAgents = [...creditAgents];
+      updatedCreditAgents[index].ok = event.target.checked;
+      setCreditAgents(updatedCreditAgents);
     }
   };
 
@@ -103,7 +120,12 @@ function CreditAgent() {
           {currentRows.map((creditAgent, index) => (
             <tr key={creditAgent.credit_agent_id}>
               <td style={{ textAlign: "center" }}>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={creditAgent.ok}
+                  onChange={(event) => handleCheckboxChange(event, index)}
+                  disabled={editing !== creditAgent.credit_agent_id} // Modifica esta línea
+                />
               </td>
               <td style={{ textAlign: "center" }}>
 
@@ -119,7 +141,7 @@ function CreditAgent() {
                   <input
                     type="text"
                     name="prodotto"
-                    value={creditAgent.prodotto}
+                    value={creditAgent.prodotto || ''}
                     onChange={(event) => handleInputChange(event, index)}
                   />
                 ) : (
@@ -131,7 +153,7 @@ function CreditAgent() {
                   <input
                     type="text"
                     name="costo"
-                    value={creditAgent.costo}
+                    value={creditAgent.costo || ''}
                     onChange={(event) => handleInputChange(event, index)}
                   />
                 ) : (

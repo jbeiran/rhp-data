@@ -49,5 +49,5 @@ CREATE TABLE IF NOT EXISTS credit_agents(
     exact numeric(10,2) not null,
     prodotto varchar(255),
     costo numeric(10,2),
-    ok boolean not null default false,
+    ok boolean not null default false
 );
