@@ -90,7 +90,12 @@ const receiptsCtrl = {
                     "UPDATE credit_clients SET dates = $1, exact = $2 WHERE receipt_id = $3",
                     [dates, exact, receipt_id]
                 );
-            }
+            } else if (code.startsWith("A")) {
+                await pool.query(
+                    "UPDATE credit_agents SET dates = $1, exact = $2 WHERE receipt_id = $3",
+                    [dates, exact, receipt_id]
+                );
+            } 
 
             res.json({ msg: "Receipt updated successfully" });
         } catch (err) {
