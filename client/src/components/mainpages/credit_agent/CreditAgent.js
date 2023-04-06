@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -25,6 +25,20 @@ function CreditAgent() {
     return `${day}-${month}-${year}`;
   };
 
+  const totalEuro = useMemo(() => {
+    return creditAgents.reduce((total, client) => total + parseFloat(client.exact || 0), 0);
+  }, [creditAgents]);
+
+  const totalCosto = useMemo(() => {
+    return creditAgents.reduce((total, client) => {
+      if (client.ok) {
+        return total + parseFloat(client.costo || 0);
+      } else {
+        return total;
+      }
+    } , 0);
+  }, [creditAgents]);
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   }
@@ -46,12 +60,12 @@ function CreditAgent() {
 
   const updateCreditAgent = async (credit_agent_id) => {
     const updatedCreditAgent = creditAgents.find((creditAgent) => creditAgent.credit_agent_id === credit_agent_id);
-    
+
     if (tempChecked !== null) {
       updatedCreditAgent.ok = tempChecked;
       setTempChecked(null);
     }
-  
+
     try {
       await axios.put(`/api/credit_agent/${credit_agent_id}`, updatedCreditAgent);
       setEditing(null);
@@ -185,6 +199,14 @@ function CreditAgent() {
             </tr>
           ))}
         </tbody>
+        <tfoot style={{ textAlign: "center" }}>
+          <tr>
+            <td colSpan="3" style={{ textAlign: "right" }}>Pagado</td>
+            <td style={{ textAlign: "center" }}>€ {totalEuro}</td>
+            <td style={{ textAlign: "right" }}>Resto</td>
+            <td style={{ textAlign: "center" }}>€ {totalEuro - totalCosto}</td>
+          </tr>
+        </tfoot>
       </table>
 
       <div className="pagination">

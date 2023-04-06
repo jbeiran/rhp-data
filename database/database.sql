@@ -51,3 +51,6 @@ CREATE TABLE IF NOT EXISTS credit_agents(
     costo numeric(10,2),
     ok boolean not null default false
 );
+
+--delete default value
+alter table credit_agents alter column ok drop default;
