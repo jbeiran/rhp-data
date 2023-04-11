@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 
 function CreditAgent() {
   const { code } = useParams();
@@ -15,7 +15,7 @@ function CreditAgent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
 
-  const [modifiedRows, setModifiedRows] = useState([]);
+  //const [modifiedRows, setModifiedRows] = useState([]);
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);

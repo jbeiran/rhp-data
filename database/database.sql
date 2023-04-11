@@ -23,6 +23,9 @@ create table receipts(
     code varchar(255) not null
 );
 
+alter table receipts alter column code drop default;
+
+
 --modify code is null
 alter table receipts alter column code drop not null;
 
@@ -54,3 +57,6 @@ CREATE TABLE IF NOT EXISTS credit_agents(
 
 --delete default value
 alter table credit_agents alter column ok drop default;
+
+--delete where receipt_id is = 0
+delete from credit_agents where receipt_id = 2;

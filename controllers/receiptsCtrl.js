@@ -59,7 +59,8 @@ const receiptsCtrl = {
     },
     updateReceipt: async (req, res) => {
         try {
-            const { receipt_id,
+            const {
+                receipt_id,
                 verify_bank,
                 dates,
                 _hours,
@@ -69,34 +70,45 @@ const receiptsCtrl = {
                 exact,
                 code
             } = req.body;
-
+    
             if (!receipt_id || verify_bank === null || !dates || !_hours || !recharge || !method || !exact || !code) {
                 return res.status(400).json({ msg: "Please enter all fields" });
             }
-
+    
             const receipt = await pool.query("SELECT * FROM receipts WHERE receipt_id = $1", [receipt_id]);
-
+    
             if (receipt.rows.length === 0) {
                 return res.status(400).json({ msg: "Receipt does not exist" });
             }
-
+    
             await pool.query(
                 "UPDATE receipts SET verify_bank = $1, dates = $2, _hours = $3, recharge = $4, notes = $5, method = $6, exact = $7, code = $8 WHERE receipt_id = $9",
                 [verify_bank, dates, _hours, recharge, notes, method, exact, code, receipt_id]
             );
-
-            if(code.startsWith("C")) {
-                await pool.query(
-                    "UPDATE credit_clients SET dates = $1, exact = $2 WHERE receipt_id = $3",
-                    [dates, exact, receipt_id]
+    
+            if (code.startsWith("C") || code.startsWith("A")) {
+                const table = code.startsWith("C") ? "credit_clients" : "credit_agents";
+                const creditEntry = await pool.query(
+                    `SELECT * FROM ${table} WHERE receipt_id = $1`,
+                    [receipt_id]
                 );
-            } else if (code.startsWith("A")) {
-                await pool.query(
-                    "UPDATE credit_agents SET dates = $1, exact = $2 WHERE receipt_id = $3",
-                    [dates, exact, receipt_id]
-                );
-            } 
-
+    
+                if (creditEntry.rows.length === 0) {
+                    const max_id = await pool.query(`SELECT MAX(credit_client_id) FROM ${table}`);
+                    const credit_client_id = max_id.rows[0].max + 1;
+    
+                    await pool.query(
+                        `INSERT INTO ${table} (credit_client_id, client_code, dates, exact, receipt_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+                        [credit_client_id, code, dates, exact, receipt_id]
+                    );
+                } else {
+                    await pool.query(
+                        `UPDATE ${table} SET client_code = $1, dates = $2, exact = $3 WHERE receipt_id = $4`,
+                        [code, dates, exact, receipt_id]
+                    );
+                }
+            }
+    
             res.json({ msg: "Receipt updated successfully" });
         } catch (err) {
             console.error(err.message);

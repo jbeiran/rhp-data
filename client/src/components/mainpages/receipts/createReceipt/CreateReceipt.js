@@ -1,10 +1,10 @@
-import React, { useState,useContext } from 'react'
+import React, { useState /*, useContext*/ } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import axios from 'axios'
 
 import { PaymentMethod } from '../PaymentMethod'
-import { GlobalState } from '../../../../GlobalState'
+//import { GlobalState } from '../../../../GlobalState'
 
 const initialState = {
   verify_bank: false,
@@ -18,7 +18,7 @@ const initialState = {
 }
 
 function CreateReceipt() {
-  const state = useContext(GlobalState)
+  //const state = useContext(GlobalState)
   const [receipt, setReceipt] = useState(initialState);
   const navigate = useNavigate()
 
@@ -45,17 +45,19 @@ function CreateReceipt() {
 
   const isAgentCode = (code) => {
     if (code.startsWith('A')) return true;
-    
+
     return false;
   }
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-     // console.log(receipt)
-      if (!isClientCode(receipt.code) && !isAgentCode(receipt.code)) {
-        alert("Invalid code. Please enter a valid code.");
-        return;
+      // console.log(receipt)
+      if(receipt.code !== '') {
+        if (!isClientCode(receipt.code) && !isAgentCode(receipt.code)) {
+          alert("Invalid code. Please enter a valid code.");
+          return;
+        }
       }
 
       const res = await axios.post('/api/receipts', { ...receipt })
@@ -78,11 +80,18 @@ function CreateReceipt() {
           costo: 0,
           receipt_id: res.data._id,
         };
+
         
         await axios.post('/api/credit_client', { ...creditClientData });
+
+        if (!receipt.verify_bank) {
+          navigate("/receipts");
+          return;
+        }
+
         navigate(`/credit_client/${receipt.code}`);
         return;
-        
+
       } else if (isAgentCode(receipt.code)) {
         const creditAgentData = {
           agent_code: receipt.code,
@@ -95,15 +104,13 @@ function CreateReceipt() {
         };
 
         await axios.post('/api/credit_agent', { ...creditAgentData });
-        navigate(`/credit_agent/${receipt.code}`);
-        return;
-      }
 
-      if(receipt.verify_bank){
-        navigate(`/receipts/${receipt.code}`);
-        return;
-      } else {
-        navigate("/receipts");
+        if (!receipt.verify_bank) {
+          navigate("/receipts");
+          return;
+        }
+
+        navigate(`/credit_agent/${receipt.code}`);
         return;
       }
 
@@ -118,7 +125,7 @@ function CreateReceipt() {
       }
     }
   };
-  
+
 
   return (
     <div style={{ marginTop: "100px" }} className="create_receipts">
