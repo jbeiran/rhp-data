@@ -3,6 +3,55 @@
     margin: 0 20px;
 }
 
+.search-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.search-filters input,
+.search-filters select {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    margin-bottom: 2px; /* Reducir margen inferior */
+}
+
+.search-filters label {
+    display: inline-block;
+    margin-right: 10px; /* Aumentar margen derecho */
+    margin-bottom: 5px; /* Añadir margen inferior */
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.search-filters button {
+    background-color: #ffae00;
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px; /* Añadir margen izquierdo */
+}
+
+.search-filters button:hover {
+    background-color: #0056b3;
+}
+
+
 .receipts_table {
     width: 100%;
     min-width: 800px;
@@ -23,7 +72,8 @@
 }
 
 .receipts_table td {
-    width: 120px; /* Ajuste el valor según sus necesidades */
+    width: 120px;
+    /* Ajuste el valor según sus necesidades */
 }
 
 .receipts_table th,
@@ -172,11 +222,27 @@
         font-weight: bold;
         display: block;
     }
+
+    .search-filters {
+        flex-direction: column;
+    }
+
+    .search-filters label {
+        margin-right: 0; /* Remover margen derecho en dispositivos móviles */
+        margin-bottom: 3px; /* Reducir margen inferior en dispositivos móviles */
+    } 
+    
+    .search-filters button {
+        margin-left: 0; /* Remover margen izquierdo en dispositivos móviles */
+        margin-top: 5px; /* Añadir margen superior en dispositivos móviles */
+    }
+
 }
 
 .receipts_table td input[type="text"],
 .receipts_table td input[type="number"],
 .receipts_table td input[type="date"] {
-  width: 100%; /* Change width to 100% */
-  box-sizing: border-box;
+    width: 100%;
+    /* Change width to 100% */
+    box-sizing: border-box;
 }

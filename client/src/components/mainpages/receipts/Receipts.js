@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { GlobalState } from '../../../GlobalState'
@@ -10,6 +10,11 @@ function Receipts() {
 
   const [editing, setEditing] = useState(null)
   const [editableReceipts, setEditableReceipts] = useState([]);
+
+  const [searchCode, setSearchCode] = useState('');
+  const [searchDate, setSearchDate] = useState('');
+  const [filterOk, setFilterOk] = useState('');
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
@@ -24,7 +29,7 @@ function Receipts() {
 
   const isAgentCode = (code) => {
     if (code.startsWith('A')) return true;
-    
+
     return false;
   }
 
@@ -56,7 +61,7 @@ function Receipts() {
     try {
       console.log(receipt)
       await axios.put(`/api/receipts/${receipt.receipt_id}`, { ...receipt });
-  
+
       setModifiedRows((prevState) => [...prevState, receipt.receipt_id]);
       fetchReceipts();
     } catch (err) {
@@ -73,6 +78,14 @@ function Receipts() {
       );
       return newReceipts;
     });
+  };
+
+  const handleSearchCodeChange = (e) => {
+    setSearchCode(e.target.value);
+  };
+
+  const handleFilterOkChange = (e) => {
+    setFilterOk(e.target.value);
   };
 
   /*const deleteReceipt = async (id) => {
@@ -111,6 +124,38 @@ function Receipts() {
     }
   };
 
+  const filteredReceipts = useMemo(() => {
+    let result = receipts.slice();
+
+    if (searchCode) {
+      result = result.filter((receipt) => receipt.code.includes(searchCode));
+    }
+
+    if (searchDate) {
+      const targetDate = new Date(searchDate);
+      result = result.filter((receipt) => {
+        const receiptDate = new Date(receipt.dates);
+        return (
+          receiptDate.getFullYear() === targetDate.getFullYear() &&
+          receiptDate.getMonth() === targetDate.getMonth() &&
+          receiptDate.getDate() === targetDate.getDate()
+        )
+      });
+    }
+
+    if (filterOk) {
+      result = result.filter((receipt) => receipt.verify_bank === (filterOk === 'true'));
+    }
+
+    return result;
+  }, [receipts, searchCode, searchDate, filterOk]);
+
+  const handleResetSearch = () => {
+    setSearchCode('');
+    setSearchDate('');
+    setFilterOk('');
+  };
+
   useEffect(() => {
     fetchReceipts();
   }, []);
@@ -118,12 +163,48 @@ function Receipts() {
 
   return (
     <div style={{ marginTop: "50px" }} className="receipts">
+
       <button className="btn btn-success" style={{ marginBottom: "20px" }}>
         <Link to="/create_receipt" style={{ color: "white" }}>
           Aggiungi ricevuta
         </Link>
-
       </button>
+      <div className="search-filters">
+        <label htmlFor="searchCode">Código de búsqueda:</label>
+        <input
+          type="text"
+          id="searchCode"
+          value={searchCode}
+          onChange={handleSearchCodeChange}
+        />
+
+        <label htmlFor="searchDate">Fecha única:</label>
+        <input
+          type="date"
+          id="searchDate"
+          value={searchDate}
+          onChange={(e) => setSearchDate(e.target.value)}
+        />
+
+        <label htmlFor="filterOk">Filtrar por estado:</label>
+        <select
+          id="filterOk"
+          value={filterOk}
+          onChange={handleFilterOkChange}
+        >
+          <option value="">Todos</option>
+          <option value="true">Validado</option>
+          <option value="false">No validado</option>
+        </select>
+
+        <button
+          className="btn btn-danger"
+          style={{ marginLeft: '20px' }}
+          onClick={handleResetSearch}
+        >
+          Eliminar búsquedas
+        </button>
+      </div>
 
       <table className="receipts_table">
         <thead>
@@ -140,7 +221,7 @@ function Receipts() {
           </tr>
         </thead>
         <tbody>
-          {receipts
+          {filteredReceipts
             .slice()
             .sort((a, b) => {
               const isAModified = modifiedRows.includes(a.receipt_id);
@@ -302,10 +383,10 @@ function Receipts() {
                         <Link
                           to={
                             isClientCode(receipt.code)
-                            ? `/credit_client/${receipt.code}`
-                            : isAgentCode(receipt.code)
-                            ? `/credit_agent/${receipt.code}`
-                            : `/not_found`
+                              ? `/credit_client/${receipt.code}`
+                              : isAgentCode(receipt.code)
+                                ? `/credit_agent/${receipt.code}`
+                                : `/not_found`
                           }
                         >
                           {receipt.code}
@@ -346,7 +427,7 @@ function Receipts() {
         <button
           className="btn btn-primary"
           onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === Math.ceil(receipts.length / rowsPerPage)}
+          disabled={currentPage === Math.ceil(filteredReceipts.length / rowsPerPage)}
         >
           Next
         </button>

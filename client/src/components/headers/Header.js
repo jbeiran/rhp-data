@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { GlobalState } from '../../GlobalState'
-import Dropdown from './Dropdown';
+//import Dropdown from './Dropdown';
 
 
 function Header() {
@@ -57,12 +57,12 @@ function Header() {
                     </Link>
                 </li>
 
-                <li className="nav-item" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+                {/*<li className="nav-item" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                     <Link className="nav-links">
                         Créditos <i className="fas fa-caret-down" />
                     </Link>
                     {dropdown && <Dropdown />}
-                </li>
+                </li>*/}
 
                 <li className="nav-item">
                     <Link to="/login" className="nav-links" onClick={logoutUser}>
