@@ -35,6 +35,7 @@ export const DataProvider = ({ children }) => {
         receiptsAPI: ReceiptsAPI()
     }
 
+
     return (
         <GlobalState.Provider value={state}>
             {children}

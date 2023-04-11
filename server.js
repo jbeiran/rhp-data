@@ -38,7 +38,7 @@ app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cookieParser());
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    origin: process.env.CORS_ORIGIN || `http://${process.env.HOST}:3000`,
     credentials: true,
 }));
 
@@ -63,5 +63,5 @@ pool.query('SELECT NOW()', (err, res) => {
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
+    console.log(`Servidor ejecutándose en http://${process.env.HOST}:${PORT}`);
 });

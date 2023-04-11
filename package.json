@@ -4,16 +4,14 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start:server": "node server.js",
-    "start:client": "npm run start --prefix client",
-    "start": "concurrently --kill-others \"npm run start:server\" \"npm run start:client\""
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.0",
+    "bcryptnpm run build": "^5.1.0",
     "concurrently": "^7.6.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

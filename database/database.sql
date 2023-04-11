@@ -7,6 +7,9 @@ create table users(
     created_at date default current_date
 );
 
+--create admin user
+insert into users(email, password, role) values('team.buscomas@gmail.com', '123456', 1);
+
 --change role to 1 for admin
 update users set role = 1 where user_id = 1;
 
@@ -24,7 +27,6 @@ create table receipts(
 );
 
 alter table receipts alter column code drop default;
-
 
 --modify code is null
 alter table receipts alter column code drop not null;

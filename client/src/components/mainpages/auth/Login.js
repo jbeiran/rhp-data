@@ -13,7 +13,7 @@ function Login() {
     e.preventDefault();
 
     try{
-      await axios.post('http://localhost:5000/user/login', {...user},
+      await axios.post(`http://${process.env.HOST}:5000/user/login`, {...user},
         { withCredentials: true })
 
       localStorage.setItem('firstLogin', true)
