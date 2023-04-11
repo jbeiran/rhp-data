@@ -1,4 +1,21 @@
-const jwt = require('jsonwebtoken')
+/**
+ * Authentication middleware
+ *
+ * This module verifies the JSON Web Token (JWT) in the incoming request.
+ *
+ * @module middlewares/auth
+ * @requires jsonwebtoken
+ */
+
+const jwt = require('jsonwebtoken');
+
+/**
+ * Auth Middleware function to verify JWT
+ * @function
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express middleware next function
+ */
 
 const auth = (req, res, next) => {
     try {

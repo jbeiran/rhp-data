@@ -1,8 +1,27 @@
+/**
+ * User controller
+ *
+ * This module exports an object with methods to handle user registration,
+ * login, logout, refreshing tokens, and getting user information.
+ *
+ * @module controllers/userCtrl
+ * @requires bcrypt
+ * @requires jsonwebtoken
+ * @requires database/db
+ */
+
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const pool = require('../database/db')
 
 const userCtrl = {
+     /**
+     * Register a new user
+     * @function
+     * @async
+     * @param {Object} req - Express request object
+     * @param {Object} res - Express response object
+     */
     register: async (req, res) => {
         try {
             const { email, password } = req.body
@@ -98,17 +117,30 @@ const userCtrl = {
     }
 }
 
+// We need to store the user's email and password in the token so that we can access it when the user wants to log in.
 const createAccessToken = (user) => {
-    //console.log('User object in createAccessToken:', user);
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '11m' });
-    //console.log('Generated access token:', accessToken);
     return accessToken;
 };
+
+// This function creates a refresh token for a user.
+// It uses the refresh token secret from the environment variables.
+// The token expires after 7 days.
+//
+// Parameters:
+//   user - the user for which to create the refresh token.
+//
+// Returns:
+//   A refresh token for the user.
 
 const createRefreshToken = (user) => {
     return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
 }
 
+// This function validates an email address
+// It returns true if the email address is valid, and false if it is not
+// The function takes a string as a parameter
+// The string should be an email address
 const validateEmail = (email) => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return re.test(String(email).toLowerCase())

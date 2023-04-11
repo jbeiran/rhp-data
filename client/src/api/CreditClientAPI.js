@@ -9,7 +9,7 @@ function CreditClientAPI() {
 
     useEffect(() => {
         const getCreditClient = async () => {
-            const res = await axios.get('/api/creditClient')
+            const res = await axios.get('/api/credit_client')
             setCreditClient(res.data)
         }
         getCreditClient()
