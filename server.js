@@ -25,7 +25,9 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
-const pool = require('./database/db')
+const pool = require('./database/db');
+const path = require('path');
+
 
 // Create the Express application
 const app = express();
@@ -54,11 +56,19 @@ app.use('/api', require('./routes/creditAgentRouter'))
  * Log an error if the connection fails, otherwise log a successful connection
  * message with the current date and time.
  */
-
 pool.query('SELECT NOW()', (err, res) => {
     if (err) console.error('Error al conectarse a la base de datos:', err);
     else console.log('Conexión a la base de datos exitosa:', res.rows[0])
 })
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+  
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
+  
+}
 
 // Start the server
 const PORT = process.env.PORT || 5000;
