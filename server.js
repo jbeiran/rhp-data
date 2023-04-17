@@ -26,11 +26,11 @@ const cors = require('cors')
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const pool = require('./database/db');
-const path = require('path');
-
 
 // Create the Express application
 const app = express();
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Apply middlewares
 app.use(express.json());
@@ -61,14 +61,10 @@ pool.query('SELECT NOW()', (err, res) => {
     else console.log('Conexión a la base de datos exitosa:', res.rows[0])
 })
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'client/build')));
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+});
   
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-    });
-  
-}
 
 // Start the server
 const PORT = process.env.PORT || 5000;

@@ -39,11 +39,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": {
-    "/api": {
-      "target": "http://23.20.13.124:5000",
-      "changeOrigin": true,
-      "pathRewrite": { "^/api": "" }
-    }
-  }
+  "proxy": "http://localhost:5000"
 }
