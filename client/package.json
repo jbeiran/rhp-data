@@ -39,5 +39,11 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://100.26.190.152:5000"
+  "proxy": {
+    "/api": {
+      "target": "http://23.20.13.124:5000",
+      "changeOrigin": true,
+      "pathRewrite": { "^/api": "" }
+    }
+  }
 }
