@@ -22,13 +22,13 @@ function Receipts() {
   const [modifiedRows, setModifiedRows] = useState([]);
 
   const isClientCode = (code) => {
-    if (code.startsWith('C')) return true;
+    if (code && code.startsWith('C')) return true;
 
     return false;
   }
 
   const isAgentCode = (code) => {
-    if (code.startsWith('A')) return true;
+    if (code && code.startsWith('A')) return true;
 
     return false;
   }
@@ -125,7 +125,7 @@ function Receipts() {
   };
 
   const filteredReceipts = useMemo(() => {
-    let result = receipts.slice();
+    let result = Array.from(receipts);
 
     if (searchCode) {
       result = result.filter((receipt) => receipt.code.includes(searchCode));
@@ -163,7 +163,7 @@ function Receipts() {
 
   return (
     <div style={{ marginTop: "50px" }} className="receipts">
-
+      
       <button className="btn btn-success" style={{ marginBottom: "20px" }}>
         <Link to="/create_receipt" style={{ color: "white" }}>
           Aggiungi ricevuta
