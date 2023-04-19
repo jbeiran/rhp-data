@@ -6,5 +6,5 @@ export const PaymentMethod = {
     CASH: 'Cash',
     PAYPAL: 'Paypal',
     POSTEPAY: 'Postepay',
-    REVOULT: 'Revolut'
+    REVOULT: 'Revoult'
 }

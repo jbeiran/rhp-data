@@ -42,17 +42,9 @@ const receiptsCtrl = {
                 "INSERT INTO receipts (receipt_id, verify_bank, dates, _hours, recharge, notes, method, exact, code) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
                 [receipt_id, verify_bank, dates, _hours, recharge, notes, method, exact, code]
             );
-                
-
-            /*if (code.startsWith("C")) {
-                await pool.query(
-                    "INSERT INTO credit_clients (client_code, dates, exact) VALUES ($1, $2, $3)",
-                    [code, date, exact]
-                    );
-            } */
 
             res.json({ _id: newReceipt.rows[0].receipt_id });
-            //res.json({ msg: "Receipt created successfully" });
+            
         } catch (err) {
             console.error(err.message);
         }

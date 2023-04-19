@@ -18,7 +18,7 @@ create table receipts(
     receipt_id serial primary key,
     verify_bank boolean not null default false,
     dates date not null,
-    _hours int not null,
+    _hours varchar(255) not null,
     recharge numeric(10,2) not null,
     notes varchar(255),
     method varchar(255) not null,

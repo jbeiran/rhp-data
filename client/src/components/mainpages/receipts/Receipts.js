@@ -22,15 +22,11 @@ function Receipts() {
   const [modifiedRows, setModifiedRows] = useState([]);
 
   const isClientCode = (code) => {
-    if (code && code.startsWith('C')) return true;
-
-    return false;
+    return code && code.startsWith('C');
   }
-
+  
   const isAgentCode = (code) => {
-    if (code && code.startsWith('A')) return true;
-
-    return false;
+    return code && code.startsWith('A');
   }
 
   const handlePageChange = (newPage) => {
@@ -282,7 +278,7 @@ function Receipts() {
                         {
                           isEditing ? (
                             <input
-                              type="number"
+                              type="string"
                               value={currentReceipt._hours}
                               style={{
                                 backgroundColor: receipt.verify_bank ? 'lightgreen' : '#FE6E6E',
