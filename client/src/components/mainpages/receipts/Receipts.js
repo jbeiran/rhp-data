@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useMemo } from 'react'
+import React, { useContext, useState, useEffect, useMemo, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { GlobalState } from '../../../GlobalState'
@@ -14,7 +14,7 @@ function Receipts() {
   const [searchCode, setSearchCode] = useState('');
   const [searchDate, setSearchDate] = useState('');
   const [filterOk, setFilterOk] = useState('');
-
+  const [isLoading, setIsLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
@@ -55,7 +55,7 @@ function Receipts() {
 
   const handleUpdate = async (receipt) => {
     try {
-      console.log(receipt)
+      //console.log(receipt)
       await axios.put(`/api/receipts/${receipt.receipt_id}`, { ...receipt });
 
       setModifiedRows((prevState) => [...prevState, receipt.receipt_id]);
@@ -111,14 +111,15 @@ function Receipts() {
     return `${day}-${month}-${year}`;
   };
 
-  const fetchReceipts = async () => {
+  const fetchReceipts = useCallback(async () => {
     try {
       const response = await axios.get('/api/receipts');
       setReceipts(response.data);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching receipts:', error);
     }
-  };
+  }, [setReceipts]);
 
   const filteredReceipts = useMemo(() => {
     let result = Array.from(receipts);
@@ -154,13 +155,15 @@ function Receipts() {
 
   useEffect(() => {
     fetchReceipts();
-  }, []);
+  }, [fetchReceipts]);
 
 
   return (
     <div style={{ marginTop: "50px" }} className="receipts">
       
-      {receipts.length > 0 ? (
+
+      {!isLoading && receipts.length > 0 ? (
+
         <>
       
           <button className="btn btn-success" style={{ marginBottom: "20px" }}>
@@ -278,7 +281,9 @@ function Receipts() {
                         {
                           isEditing ? (
                             <input
+
                               type="string"
+
                               value={currentReceipt._hours}
                               style={{
                                 backgroundColor: receipt.verify_bank ? 'lightgreen' : '#FE6E6E',
@@ -433,8 +438,12 @@ function Receipts() {
           </div>
         </>
       ):(
-        <p>Loading...</p>
-      )}
+	<div className="loader">
+	                <div></div>
+	                <div></div>
+	                <div></div>
+	              </div>
+	          )}
     </div>
   )
 }
