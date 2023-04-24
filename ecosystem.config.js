@@ -2,7 +2,7 @@ module.exports = {
 	  apps: [
 		      {
 			            name: 'rhp',
-			            script: 'npm',
+			            script: 'server.js',
 			            args: 'start',
 			            env: {
 					            NODE_ENV: 'production',
