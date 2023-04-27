@@ -9,7 +9,7 @@ function ReceiptsAPI() {
 
     useEffect(() => {
         const getReceipts = async () => {
-            const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/receipts`)
+            const res = await axios.get('/api/receipts')
             setReceipts(res.data)
         }
         getReceipts()

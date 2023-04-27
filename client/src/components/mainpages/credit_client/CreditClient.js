@@ -12,8 +12,6 @@ function CreditClient() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
 
-  const [modifiedRows, setModifiedRows] = useState([]);
-
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     const year = date.getFullYear();

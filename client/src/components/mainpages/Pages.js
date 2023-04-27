@@ -5,7 +5,6 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 
 import Receipts from "./receipts/Receipts";
-import CreateReceipt from "./receipts/createReceipt/CreateReceipt";
 
 import CreditClient from "./credit_client/CreditClient";
 import CreditAgent from "./credit_agent/CreditAgent";
@@ -29,7 +28,6 @@ function Pages() {
                 <Route path="/register" exact element={isAdmin ? <Register /> : <NotFound />} />
                 
                 <Route path="/receipts" exact element={isLogged ? <Receipts /> : <NotFound />} />
-                <Route path="/create_receipt" exact element={isLogged ? <CreateReceipt /> : <NotFound />} />
 
                 <Route path="/credit_client/:code" exact element={isLogged ? <CreditClient /> : <NotFound />} />
                 <Route path="/credit_agent/:code" exact element={isLogged ? <CreditAgent /> : <NotFound />} />

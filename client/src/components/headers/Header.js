@@ -12,7 +12,6 @@ function Header() {
     const [isAdmin] = state.userAPI.isAdmin
 
     const [click, setClick] = useState(false)
-    const [dropdown, setDropdown] = useState(false);
 
     const handleClick = () => setClick(!click)
 
@@ -21,16 +20,6 @@ function Header() {
         localStorage.removeItem('firstLogin')
         window.location.href = "/login";
     }
-
-    const onMouseEnter = () => {
-        if (window.innerWidth < 960) setDropdown(false);
-        else setDropdown(true);
-    };
-
-    const onMouseLeave = () => {
-        if (window.innerWidth < 960) setDropdown(false);
-        else setDropdown(false);
-    };
 
     const adminRouter = () => {
         return (
